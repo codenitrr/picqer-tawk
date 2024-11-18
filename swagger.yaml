@@ -9,7 +9,7 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "https://beauty-cosmetics-trends-e-commerce.picqer.com"
+host: "beauty-cosmetics-trends-e-commerce.picqer.com"
 basePath: "/api/v1"
 tags:
 - name: "orders"
