@@ -1,0 +1,161 @@
+swagger: "2.0"
+info:
+  description: "A warehouse management server to look up order statuses."
+  version: "1.0.7"
+  title: "Picqer WMS"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "beauty-cosmetics-trends-e-commerce.picqer.com"
+basePath: "/api/v1"
+tags:
+- name: "orders"
+  description: "Access to Picqer orders"
+schemes:
+- "https"
+- "http"
+paths:
+  /orders:
+    get:
+      tags:
+      - "orders"
+      summary: "Returns an order"
+      description: "Returns the customer's order"
+      operationId: "getOrder"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "search"
+        in: "query"
+        description: "Order number to return"
+        required: true
+        type: "string"
+      - name: "emailaddress"
+        in: "query"
+        description: "Email address linked to order"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+      security:
+      - api_key: []
+  /products:
+    get:
+      tags:
+      - "products"
+      summary: "Returns products"
+      description: "Returns a product with stock details"
+      operationId: "getProduct"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "productcode"
+        in: "query"
+        description: "Product code to search for"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+      security:
+      - api_key: []
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Order:
+    type: "object"
+    properties:
+      idorder:
+        type: "integer"
+        format: "int64"
+      idcustomer:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int32"
+      created:
+        type: "string"
+        format: "date-time"
+      public_status_page:
+        type: "string"
+        description: "Order Status page link"
+    xml:
+      name: "Order"
+  Product:
+    type: "object"
+    properties:
+      idproduct:
+        type: "integer"
+        format: "int32"
+      idsupplier:
+        type: "integer"
+        format: "int32"
+      productcode:
+        type: "string"
+      name:
+        type: "string"
+      fixedstockprice:
+        type: "number"
+        format: "float"
+      productcode_supplier:
+        type: "string"
+      barcode:
+        type: "number"
+        format: "int64"
+      productfields:
+        type: "array"
+        xml:
+          wrapped: true
+        items:
+          xml:
+            name: "ProductField"
+          $ref: "#/definitions/ProductField"
+      stock:
+        type: "array"
+        xml:
+          wrapped: true
+        items:
+          xml:
+            name: "Warehouse"
+          $ref: "#/definitions/Warehouse"
+    xml:
+      name: "Product"
+  ProductField:
+    type: "object"
+    properties:
+      idproductfield:
+        type: "integer"
+        format: "int32"
+      title:
+        type: "string"
+      value:
+        type: "string"
+    xml:
+      name: "ProductField"
+  Warehouse:
+    type: "object"
+    properties:
+      idwarehouse:
+        type: "integer"
+        format: "int32"
+      freestock:
+        type: "integer"
+        format: "int32"
+    xml:
+      name: "Warehouse"
